@@ -61,37 +61,30 @@ def customShadowCallback_DeltaUpdate(payload, responseStatus, token):
     delta_tv =delta.get("TV")
 
     if delta_tv:
-        if delta_tv.get("power") > 0:
+        if delta_tv.get("power"):
             # Infrared transmission
             cmd = "python3 irrp.py -p -g17 -f codes tv:pwr_on"
             subprocess.check_call(cmd.split())
 
-            # delite delta
-            payload = {"state":{"reported":{"TV":{"power":1}}}}
-            deviceShadowHandler.shadowUpdate(json.dumps(payload),customShadowCallback_Update, 5)
-
-        if delta_tv.get("volume_up") > 0:
+        if delta_tv.get("volume_up"):
             # Infrared transmission
             for i in range(delta_tv.get("volume_up")):
                 cmd = "python3 irrp.py -p -g17 -f codes tv:vlm_up"
                 subprocess.check_call(cmd.split())
 
-            # delite delta
-            payload = {"state":{"reported":{"TV":{"volume_up":delta_tv.get("volume_up")}}}}
-            deviceShadowHandler.shadowUpdate(json.dumps(payload),customShadowCallback_Update, 5)
-
-        if delta_tv.get("volume_down") > 0:
+        if delta_tv.get("volume_down"):
             # Infrared transmission
             for i in range(delta_tv.get("volume_down")):
                 cmd = "python3 irrp.py -p -g17 -f codes tv:vlm_down"
                 subprocess.check_call(cmd.split())
 
-            # delite delta
-            payload = {"state":{"reported":{"TV":{"volume_down":delta_tv.get("volume_up")}}}}
-            deviceShadowHandler.shadowUpdate(json.dumps(payload),customShadowCallback_Update, 5)
-
-    # reset reported-shadow
+    # Create message payload
     payload = {"state":{"reported":{"TV":{"power":0,"volume_up":0,"volume_down":0}}}}
+
+    # Delete old Shadow
+    deviceShadowHandler.shadowDelete(customShadowCallback_Delete, 5)
+
+    # Create New Shadow
     deviceShadowHandler.shadowUpdate(json.dumps(payload),customShadowCallback_Update, 5)
 
 # Connect to AWS IoT
