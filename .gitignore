@@ -1,0 +1,6 @@
+__pycache__
+myvenv
+aws_iot.py
+cert
+iam
+test.py
