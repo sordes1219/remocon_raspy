@@ -91,7 +91,7 @@ def customShadowCallback_DeltaUpdate(payload, responseStatus, token):
             deviceShadowHandler.shadowUpdate(json.dumps(payload),customShadowCallback_Update, 5)
 
     # reset reported-shadow
-    payload = {"state":{"reported":{"TV":{"power":0,"volume_up":0,"volume_down":0)}}}}
+    payload = {"state":{"reported":{"TV":{"power":0,"volume_up":0,"volume_down":0}}}}
     deviceShadowHandler.shadowUpdate(json.dumps(payload),customShadowCallback_Update, 5)
 
 # Connect to AWS IoT
